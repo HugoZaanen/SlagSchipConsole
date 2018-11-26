@@ -36,7 +36,7 @@ namespace SlagSchipConsole
                 }
                 while (y > 9 || y < 0)
                 {
-                    Console.Write("Choose y:");
+                    Console.WriteLine("Choose y:");
                     y = Int32.Parse(Console.ReadLine());
                 }
                 while (dir != "r" && dir != "d")
@@ -59,8 +59,8 @@ namespace SlagSchipConsole
                 x = -1;
                 y = -1;
             }
-            //loops(9,4,"r");
-            
+
+            //loops(9,4,"r");            
         }
 
         public static int[,] initializeArray()
