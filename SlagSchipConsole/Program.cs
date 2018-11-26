@@ -11,6 +11,7 @@ namespace SlagSchipConsole
         static void Main(string[] args)
         {
             Game.PlayBattleShip();
+            Console.ReadLine();
         }
     }
 }
