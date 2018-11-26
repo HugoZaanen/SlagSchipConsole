@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace SlagSchipConsole
 {
     public class Game
     {
         public static int[,] pos;
         public static Stack<int> Battleships = new Stack<int>();
-
+        public static int x = -1;
+        public static int y = -1;
+        public static string dir;
         
         public static void PlayBattleShip()
         {
@@ -24,19 +27,38 @@ namespace SlagSchipConsole
 
             pos = initializeArray();
 
-            SetPos(5,3,"d");
-            SetPos(0,3,"d");
-            SetPos(0,0,"d");
-
-            for (int i = 0; i < 10; i++)
+            while (Battleships.Count != 0)
             {
-                for (int j = 0; j < 10; j++)
+                while (x > 9 || x <= 0)
                 {
-                    Console.Write(pos[i, j] + " ");
+                    Console.WriteLine("Choose x:");
+                    x = Int32.Parse(Console.ReadLine());
                 }
-                Console.WriteLine("");
-            }
+                while (y > 9 || y < 0)
+                {
+                    Console.Write("Choose y:");
+                    y = Int32.Parse(Console.ReadLine());
+                }
+                while (dir != "r" && dir != "d")
+                {
+                    Console.WriteLine("Choose dir: r of d");
+                    dir = Console.ReadLine();
+                }
 
+                SetPos(x,y,dir);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        Console.Write(pos[i, j] + " ");
+                    }
+                    Console.WriteLine("");
+                }
+                dir = "";
+                x = -1;
+                y = -1;
+            }
             //loops(9,4,"r");
             
         }
