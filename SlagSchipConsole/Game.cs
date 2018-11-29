@@ -6,12 +6,26 @@ namespace SlagSchipConsole
 {
     public class Game
     {
-        public static int[,] pos;
+        public static int[,] pos = 
+        {
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,0}
+        };
+
         public static Stack<int> Battleships = new Stack<int>();
         public static int x = -1;
         public static int y = -1;
         public static string dir;
-        
+        public static int count;
+
         public static void PlayBattleShip()
         {
             Battleships.Push(2);
@@ -24,175 +38,126 @@ namespace SlagSchipConsole
             Battleships.Push(4);
             Battleships.Push(4);
             Battleships.Push(5);
-
-            pos = initializeArray();
-
-            while (Battleships.Count != 0)
-            {
-                while (x > 9 || x <= 0)
-                {
-                    Console.WriteLine("Choose x:");
-                    x = Int32.Parse(Console.ReadLine());
-                }
-                while (y > 9 || y < 0)
-                {
-                    Console.WriteLine("Choose y:");
-                    y = Int32.Parse(Console.ReadLine());
-                }
-                while (dir != "r" && dir != "d")
-                {
-                    Console.WriteLine("Choose dir: r of d");
-                    dir = Console.ReadLine();
-                }
-
-                SetPos(x,y,dir);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    for (int j = 0; j < 10; j++)
-                    {
-                        Console.Write(pos[i, j] + " ");
-                    }
-                    Console.WriteLine("");
-                }
-                dir = "";
-                x = -1;
-                y = -1;
-            }
-
-            //loops(9,4,"r");            
-        }
-
-        public static int[,] initializeArray()
-        {
-            int[,] positions = new int[10, 10];
+            
 
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    positions[i, j] = 0;
+                    Console.Write(pos[i, j] + " ");
                 }
+                Console.WriteLine("");
             }
+            Console.WriteLine();
 
-            return positions;
-        }
+            SetShip(3,0,"d");
 
-        public static void SetPos(int k, int l, string m)
-        {
-            if (loops(k,l,m))
+            for (int i = 0; i < 10; i++)
             {
-                if(m == "r")
+                for (int j = 0; j < 10; j++)
                 {
-                    for (int i = 0;i < Battleships.Peek();i++)
-                    {
-                        pos[k, l + i] = 1;
-                    }
+                    Console.Write(pos[i, j] + " ");
                 }
-                else
-                {
-                    for (int i = 0;i < Battleships.Peek();i++)
-                    {
-                        pos[k + i, l] = 1;
-                    }
-                }
-                Battleships.Pop();
+                Console.WriteLine("");
             }
         }
 
-        public static bool loops(int k, int l, string m)
+        public static void SetShip(int k, int l, string m)
         {
-            if (l > 0 && l < 9 && m == "d")
+            if (CanPlace(k,l,m))
             {
-                if (!(Battleships.Peek() + k >= 10))
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        if (pos[i, l - 1] == 1)
-                        {
-                            return false;
-                        }
-
-                        if (pos[i, l + 1] == 1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else if (l < 1 && m == "d")
-            {
-                if (!(Battleships.Peek() + k >= 10))
-                {
-                    for (int i = 0; i < Battleships.Peek(); i++)
-                    {                       
-                        if (pos[i, l + 1] == 1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else if(m == "d")
-            {
-                if (!(Battleships.Peek() + k >= 10))
+                if (m == "d")
                 {
                     for (int i = 0; i < Battleships.Peek(); i++)
                     {
-                        if (pos[k + i, l - 1] == 1)
+                       pos[k + i, l] = 1;                        
+                    }
+                }
+                else if (m == "r")
+                {
+                    for (int i = 0; i < Battleships.Peek(); i++)
+                    {
+                        pos[k, l + i] += 1;
+                    }                   
+                }
+
+                Battleships.Peek();
+            }
+        }
+
+        public static bool CanPlace(int k, int l, string d)
+        {
+            if (!(Battleships.Peek() + k > 9) && !(Battleships.Peek() + l > 9))
+            {
+                if (k > 0 && l > 0 && d == "d")
+                {
+                    for (int i = 0;i <= Battleships.Peek();i++)
+                    {
+                        if (   pos[k,l] == 1 
+                            || pos[k - 1,l - 1] == 1 
+                            || pos[k - 1,l] == 1 
+                            || pos[k - 1, l + 1] == 1 
+                            || pos[k + i,l - 1] == 1 
+                            || pos[k + i,l] == 1 
+                            || pos[k + i,l + 1] == 1)
                         {
                             return false;
                         }
                     }
                 }
-                else
-                {
-                    return false;
-                }
-            }
 
-            if (k > 0 && k < 9 && m == "r")
-            {
-                for (int i = 0; i < 5; i++)
+                if (k < 1 && l == 0 && d == "d")
                 {
-                    if (pos[k + 1,l + i] == 1)
+                    for (int i = 0;i <= Battleships.Peek();i++)
                     {
-                        return false;
+                        if (pos[k + 1,l] == 1 ||
+                            pos[k + i,l + i] == 1 ||
+                            pos[k + i,l + 1] == 1 ||
+                            pos[k + i,l] == 1)
+                        {
+                            return false;
+                        }
                     }
+                }
 
-                    if (pos[k - 1, l + i] == 1)
+                if (k > 0 && l < 1 && d == "d")
+                {
+                    for (int i = 0; i <= Battleships.Peek(); i++)
                     {
-                        return false;
+                        if (pos[k - 1, l] == 1 ||
+                            pos[k - 1, l + i] == 1 ||
+                            pos[k, l + 1] == 1 ||
+                            pos[k + i,l] == 1 ||
+                            pos[k + i,l + 1] == 1)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                if (k > 0 && l > 0 && d == "r")
+                {
+                    for (int i = 0; i <= Battleships.Peek(); i++)
+                    {
+                        if (pos[k,l] == 1 ||
+                            pos[k,l - 1] == 1 ||
+                            pos[k - 1,l - 1] == 1 ||
+                            pos[k + 1,l - 1] == 1 ||
+                            pos[k + 1,l] == 1 ||
+                            pos[k + 1,l + i] == 1 ||
+                            pos[k,l + i] == 1 ||
+                            pos[k + 1,l + i] == 1 ||
+                            pos[k - 1,l + i] == 1
+                            )
+                        {
+                            return false;
+                        }
                     }
                 }
             }
-            else if (k < 1 && m == "r")
+            else
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    if (pos[k + 1, l + i] == 1)
-                    {
-                        return false;
-                    }
-                }
-            }
-            else if(m == "r")
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    if (pos[k - 1,l + i] == 1)
-                    {
-                        return false;
-                    }                    
-                }
+                return false;
             }
             return true;
         }
