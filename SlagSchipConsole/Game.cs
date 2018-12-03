@@ -135,8 +135,8 @@ namespace SlagSchipConsole
             #endregion
 
             //}
-
-            SetShip(0,9,"d",posP,Battleships);
+            SetShip(0,8,"d",posP, Battleships);
+            SetShip(5,4,"r",posP,Battleships);
 
             printArray(posP);
 
@@ -181,33 +181,33 @@ namespace SlagSchipConsole
         #region CanPlace method
         public static bool CanPlace(int k, int l, string d,int[,] pos,Stack<int> Battleships)
         {
-            if (!(Battleships.Peek() + k > 9) && !(Battleships.Peek() + l > 9))
+            if (!(Battleships.Peek() + k > 9) && d == "d")
             {
                 if (k > 0 && l > 0 && d == "d")
                 {
-                    for (int i = 0;i <= Battleships.Peek();i++)
+                    for (int i = 0; i <= Battleships.Peek(); i++)
                     {
-                        if (   pos[k,l] == 1 
-                            || pos[k - 1,l - 1] == 1 
-                            || pos[k - 1,l] == 1 
-                            || pos[k - 1, l + 1] == 1 
-                            || pos[k + i,l - 1] == 1 
-                            || pos[k + i,l] == 1 
-                            || pos[k + i,l + 1] == 1)
+                        if (pos[k, l] == 1
+                            || pos[k - 1, l - 1] == 1
+                            || pos[k - 1, l] == 1
+                            || pos[k - 1, l + 1] == 1
+                            || pos[k + i, l - 1] == 1
+                            || pos[k + i, l] == 1
+                            || pos[k + i, l + 1] == 1)
                         {
                             return false;
                         }
                     }
                 }
-                
+
                 if (k < 1 && l == 0 && d == "d")
                 {
-                    for (int i = 0;i <= Battleships.Peek();i++)
+                    for (int i = 0; i <= Battleships.Peek(); i++)
                     {
-                        if (pos[k + 1,l] == 1 ||
-                            pos[k + i,l + i] == 1 ||
-                            pos[k + i,l + 1] == 1 ||
-                            pos[k + i,l] == 1)
+                        if (pos[k + 1, l] == 1 ||
+                            pos[k + i, l + i] == 1 ||
+                            pos[k + i, l + 1] == 1 ||
+                            pos[k + i, l] == 1)
                         {
                             return false;
                         }
@@ -221,24 +221,24 @@ namespace SlagSchipConsole
                         if (pos[k - 1, l] == 1 ||
                             pos[k - 1, l + i] == 1 ||
                             pos[k, l + 1] == 1 ||
-                            pos[k + i,l] == 1 ||
-                            pos[k + i,l + 1] == 1)
+                            pos[k + i, l] == 1 ||
+                            pos[k + i, l + 1] == 1)
                         {
                             return false;
                         }
                     }
                 }
 
-                if (k > 0 && l > 8 && d == "d")
+                if (k >= 0 && l > 8 && d == "d")
                 {
-                    for (int i = 0;i<Battleships.Peek();i++)
+                    for (int i = 0; i < Battleships.Peek(); i++)
                     {
-                        if (pos[k,l] == 1 ||
-                            pos[k + 1 + i,l] == 1 ||
-                            pos[k,l - 1] == 1 ||
-                            pos[k + 1 + i,l + 1] == 1 ||
-                            pos[k - 1,l] == 1 ||
-                            pos[k - 1,l - 1] == 1
+                        if (pos[k, l] == 1 ||
+                            pos[k + 1 + i, l] == 1 ||
+                            pos[k, l - 1] == 1 ||
+                            pos[k + 1 + i, l + 1] == 1 ||
+                            pos[k - 1, l] == 1 ||
+                            pos[k - 1, l - 1] == 1
                             )
                         {
                             return false;
@@ -246,35 +246,37 @@ namespace SlagSchipConsole
                     }
                 }
 
-                if (k < 0 && l > 8)
+                if (k < 1 && l < 9 && d == "d")
                 {
-                    for (int i = 0;i < Battleships.Peek();i++)
+                    for (int i = 0; i < Battleships.Peek(); i++)
                     {
-                        if (pos[k,l] == 1 ||
-                            pos[k,l - 1] == 1 ||
-                            pos[k + 1 + i,l] == 1 ||
-                            pos[k + 1 + i,l - 1] == 1 ||
+                        if (pos[k, l] == 1 ||
+                            pos[k, l - 1] == 1 ||
+                            pos[k + 1 + i, l] == 1 ||
+                            pos[k + 1 + i, l - 1] == 1 ||
                             pos[k + 1 + i, l - 1 - i] == 1)
                         {
                             return false;
                         }
                     }
                 }
-
+            }
+            else if (!(Battleships.Peek() + l > 9) && d == "r")
+            {
                 if (k > 0 && l > 0 && d == "r")
                 {
                     for (int i = 0; i <= Battleships.Peek(); i++)
                     {
-                        if (pos[k,l] == 1 ||
-                            pos[k,l - 1] == 1 ||
-                            pos[k - 1,l - 1] == 1 ||
-                            pos[k + 1,l - 1] == 1 ||
-                            pos[k + 1,l] == 1 ||
-                            pos[k + 1,l + i] == 1 ||
-                            pos[k,l + i] == 1 ||
-                            pos[k + 1,l + i] == 1 ||
-                            pos[k - 1,l + i] == 1 ||
-                            pos[k - 1,l + i] == 1
+                        if (pos[k, l] == 1 ||
+                            pos[k, l - 1] == 1 ||
+                            pos[k - 1, l - 1] == 1 ||
+                            pos[k + 1, l - 1] == 1 ||
+                            pos[k + 1, l] == 1 ||
+                            pos[k + 1, l + i] == 1 ||
+                            pos[k, l + i] == 1 ||
+                            pos[k + 1, l + i] == 1 ||
+                            pos[k - 1, l + i] == 1 ||
+                            pos[k - 1, l + i] == 1
                             )
                         {
                             return false;
@@ -284,7 +286,7 @@ namespace SlagSchipConsole
 
                 if (k < 1 && d == "r")
                 {
-                    for (int i = 0;i < Battleships.Peek();i++)
+                    for (int i = 0; i < Battleships.Peek(); i++)
                     {
                         if (pos[k, l] == 1 ||
                             pos[k + 1, l] == 1 ||
@@ -305,6 +307,7 @@ namespace SlagSchipConsole
             {
                 return false;
             }
+            
             return true;
         }
         #endregion
