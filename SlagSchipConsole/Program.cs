@@ -12,14 +12,7 @@ namespace SlagSchipConsole
 
         static void Main(string[] args)
         {
-            //Game.PlayBattleShip();
-
-            for(int j = 0;j < 3;j++)
-            {
-                int i = rand.Next(1, 10);
-                Console.WriteLine(i);
-            }
-
+            Game.PlayBattleShip();
             Console.ReadLine();
         }
     }
