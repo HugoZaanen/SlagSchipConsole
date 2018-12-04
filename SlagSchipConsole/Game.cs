@@ -135,8 +135,8 @@ namespace SlagSchipConsole
             #endregion
 
             //}
-            SetShip(0,8,"d",posP, Battleships);
-            SetShip(5,4,"r",posP,Battleships);
+            SetShip(8,4,"r",posP, Battleships);
+            SetShip(9,0,"r",posP,Battleships);
 
             printArray(posP);
 
@@ -298,9 +298,34 @@ namespace SlagSchipConsole
                     }
                 }
 
-                if (k > 8 && d == "r")
+                if (k > 8 && l < 1 && d == "r")
                 {
+                    for(int i = 0;i < Battleships.Peek();i++)
+                    {
+                        if(pos[k,l] == 1 ||
+                            pos[k, l + 1 +i] == 1 ||
+                            pos[k - 1,l + 1 + i] == 1 ||
+                            pos[k - 1,l] == 1
+                            )
+                        {
+                            return false;
+                        }
+                    }
+                }
 
+                if (k > 8 && l > 0 && d == "r")
+                {
+                    for (int i = 0; i < Battleships.Peek(); i++)
+                    {
+                        if (pos[k,l] == 1 ||
+                            pos[k - 1,l - 1] == 1 ||
+                            pos[k - 1,l] == 1 ||
+                            pos[k,l - 1] == 1 ||
+                            pos[k,l + 1 + i] == 1)
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
             else
