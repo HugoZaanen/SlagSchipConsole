@@ -6,8 +6,8 @@ namespace SlagSchipConsole
 {
     public class Game
     {
-        public static int[,] posP = new int[10,10];
-        public static int[,] posC = new int[10,10];
+        public static int[,] posP = new int[10, 10];
+        public static int[,] posC = new int[10, 10];
 
         public static Stack<int> Battleships = new Stack<int>();
         public static Stack<int> BattleshipsC = new Stack<int>();
@@ -21,14 +21,15 @@ namespace SlagSchipConsole
         public static int hitCountC = 0;
 
         public static Random rand1 = new Random();
+        public static Random rand2 = new Random();
 
         public static void PlayBattleShip()
         {
             //initialize pos array's
             #region initialize pos array
-            for (int i = 0;i < 10;i++)
+            for (int i = 0; i < 10; i++)
             {
-                for (int j = 0;j < 10;j++)
+                for (int j = 0; j < 10; j++)
                 {
                     posP[i, j] = 0;
                 }
@@ -70,79 +71,8 @@ namespace SlagSchipConsole
 
             Console.WriteLine("welcome to Battleship");
 
-            // while (game)
-            //{
-            #region Battleships Comp
-            //Battleship Computers positions
+            SetShipComp(BattleshipsC, posC);
 
-            //while (Battleships.Count != 0)
-            //{
-            //    int i = rand1.Next(0,10);
-            //    int j = rand1.Next(0,10);
-
-            //    Console.WriteLine(i);
-            //    Console.WriteLine(j);
-            //    Console.Read();
-
-            //    if ((i + i) / 2 > 5)
-            //    {
-            //        dir = "d";
-            //    }
-            //    else
-            //    {
-            //        dir = "r";
-            //    }
-
-            //    SetShip(i, j, dir, posC, BattleshipsC);
-
-            //    for (int x = 0;x < 10;x++)
-            //    {
-            //        for (int y = 0;y < 10;y++)
-            //        {
-            //            Console.Write(posC[x,y]);
-            //        }
-            //        Console.WriteLine();
-            //    }
-            //    Console.WriteLine();
-            //    Console.Read();
-            //}
-            #endregion
-
-            #region Game play
-            //Console.WriteLine("Choose Ship Positions");
-
-            //while (Battleships.Count != 0)
-            //{
-
-            //}
-
-            //Shoot();
-
-            //if (hitCountP == 30 || hitCountC == 30)
-            //{
-            //    game = false;
-            //}
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    for (int j = 0; j < 10; j++)
-            //    {
-            //        Console.Write(posP[i,j]);
-            //    }
-            //    Console.WriteLine();
-            //}
-            //Console.ReadKey();
-            #endregion
-
-            //}
-            SetShip(8,4,"r",posP, Battleships);
-            SetShip(9,0,"r",posP,Battleships);
-
-            printArray(posP);
-
-            SetShip(0,1,"r",posP,Battleships);
-
-            printArray(posP);
         }
 
         #region SetShip method
@@ -154,15 +84,15 @@ namespace SlagSchipConsole
         /// <param name="k"></param>
         /// <param name="l"></param>
         /// <param name="m"></param>
-        public static void SetShip(int k, int l, string m,int[,] pos,Stack<int> Battleships)
+        public static void SetShip(int k, int l, string m, int[,] pos, Stack<int> Battleships)
         {
-            if (CanPlace(k,l,m,pos,Battleships))
+            if (CanPlace(k, l, m, pos, Battleships))
             {
                 if (m == "d")
                 {
                     for (int i = 0; i < Battleships.Peek(); i++)
                     {
-                       pos[k + i, l] = 1;                        
+                        pos[k + i, l] = 1;
                     }
                 }
                 else if (m == "r")
@@ -170,7 +100,7 @@ namespace SlagSchipConsole
                     for (int i = 0; i < Battleships.Peek(); i++)
                     {
                         pos[k, l + i] += 1;
-                    }                   
+                    }
                 }
 
                 Battleships.Pop();
@@ -179,160 +109,51 @@ namespace SlagSchipConsole
         #endregion
 
         #region CanPlace method
-        public static bool CanPlace(int k, int l, string d,int[,] pos,Stack<int> Battleships)
+        public static bool CanPlace(int k, int l, string d, int[,] pos, Stack<int> Battleships)
         {
-            if (!(Battleships.Peek() + k > 9) && d == "d")
+            if (!(Battleships.Peek() + k > 8) && !(Battleships.Peek() + l > 8))
             {
-                if (k > 0 && l > 0 && d == "d")
+                if (k > 0 && l > 0 && k < 9 && l < 9)
                 {
-                    for (int i = 0; i <= Battleships.Peek(); i++)
+                    if (d == "d")
                     {
-                        if (pos[k, l] == 1
-                            || pos[k - 1, l - 1] == 1
-                            || pos[k - 1, l] == 1
-                            || pos[k - 1, l + 1] == 1
-                            || pos[k + i, l - 1] == 1
-                            || pos[k + i, l] == 1
-                            || pos[k + i, l + 1] == 1)
+                        for (int i = 0; i < Battleships.Peek(); i++)
                         {
-                            return false;
+                            if (pos[k, l] == 1 ||
+                                pos[k - 1, l] == 1 ||
+                                pos[k - 1, l - 1] == 1 ||
+                                pos[k - 1, l + 1] == 1 ||
+                                pos[k, l - 1] == 1 ||
+                                pos[k, l + 1] == 1 ||
+                                pos[k + 1 + i, l - 1] == 1 ||
+                                pos[k + 1 + i, l] == 1 ||
+                                pos[k + 1 + i, l + 1] == 1)
+                            {
+                                return false;
+                            }
                         }
                     }
-                }
-
-                if (k < 1 && l == 0 && d == "d")
-                {
-                    for (int i = 0; i <= Battleships.Peek(); i++)
+                    else
                     {
-                        if (pos[k + 1, l] == 1 ||
-                            pos[k + i, l + i] == 1 ||
-                            pos[k + i, l + 1] == 1 ||
-                            pos[k + i, l] == 1)
+                        for (int i = 0; i < Battleships.Peek(); i++)
                         {
-                            return false;
-                        }
-                    }
-                }
-
-                if (k > 0 && l < 1 && d == "d")
-                {
-                    for (int i = 0; i <= Battleships.Peek(); i++)
-                    {
-                        if (pos[k - 1, l] == 1 ||
-                            pos[k - 1, l + i] == 1 ||
-                            pos[k, l + 1] == 1 ||
-                            pos[k + i, l] == 1 ||
-                            pos[k + i, l + 1] == 1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                if (k >= 0 && l > 8 && d == "d")
-                {
-                    for (int i = 0; i < Battleships.Peek(); i++)
-                    {
-                        if (pos[k, l] == 1 ||
-                            pos[k + 1 + i, l] == 1 ||
-                            pos[k, l - 1] == 1 ||
-                            pos[k + 1 + i, l + 1] == 1 ||
-                            pos[k - 1, l] == 1 ||
-                            pos[k - 1, l - 1] == 1
-                            )
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                if (k < 1 && l < 9 && d == "d")
-                {
-                    for (int i = 0; i < Battleships.Peek(); i++)
-                    {
-                        if (pos[k, l] == 1 ||
-                            pos[k, l - 1] == 1 ||
-                            pos[k + 1 + i, l] == 1 ||
-                            pos[k + 1 + i, l - 1] == 1 ||
-                            pos[k + 1 + i, l - 1 - i] == 1)
-                        {
-                            return false;
+                            if(pos[k,l] == 1 ||
+                               pos[k - 1,l] == 1 ||
+                               pos[k - 1,l - 1] == 1 ||
+                               pos[k - 1,l + 1 + i] == 1 ||
+                               pos[k,l - 1] == 1 ||
+                               pos[k,l + 1 + i] == 1 ||
+                               pos[k + 1,l - 1] == 1 ||
+                               pos[k + 1, l] == 1 ||
+                               pos[k + 1,l + 1 + i] == 1
+                               )
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
             }
-            else if (!(Battleships.Peek() + l > 9) && d == "r")
-            {
-                if (k > 0 && l > 0 && d == "r")
-                {
-                    for (int i = 0; i <= Battleships.Peek(); i++)
-                    {
-                        if (pos[k, l] == 1 ||
-                            pos[k, l - 1] == 1 ||
-                            pos[k - 1, l - 1] == 1 ||
-                            pos[k + 1, l - 1] == 1 ||
-                            pos[k + 1, l] == 1 ||
-                            pos[k + 1, l + i] == 1 ||
-                            pos[k, l + i] == 1 ||
-                            pos[k + 1, l + i] == 1 ||
-                            pos[k - 1, l + i] == 1 ||
-                            pos[k - 1, l + i] == 1
-                            )
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                if (k < 1 && d == "r")
-                {
-                    for (int i = 0; i < Battleships.Peek(); i++)
-                    {
-                        if (pos[k, l] == 1 ||
-                            pos[k + 1, l] == 1 ||
-                            pos[k + 1, l + 1 + i] == 1 ||
-                            pos[k, l + 1 + i] == 1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                if (k > 8 && l < 1 && d == "r")
-                {
-                    for(int i = 0;i < Battleships.Peek();i++)
-                    {
-                        if(pos[k,l] == 1 ||
-                            pos[k, l + 1 +i] == 1 ||
-                            pos[k - 1,l + 1 + i] == 1 ||
-                            pos[k - 1,l] == 1
-                            )
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                if (k > 8 && l > 0 && d == "r")
-                {
-                    for (int i = 0; i < Battleships.Peek(); i++)
-                    {
-                        if (pos[k,l] == 1 ||
-                            pos[k - 1,l - 1] == 1 ||
-                            pos[k - 1,l] == 1 ||
-                            pos[k,l - 1] == 1 ||
-                            pos[k,l + 1 + i] == 1)
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                return false;
-            }
-            
             return true;
         }
         #endregion
@@ -357,7 +178,7 @@ namespace SlagSchipConsole
 
             int i = posP[k, l];
 
-            if(i == 1)
+            if (i == 1)
             {
                 posP[k, l] = 2;
                 hitCountP++;
@@ -378,6 +199,44 @@ namespace SlagSchipConsole
                 Console.WriteLine();
             }
             Console.WriteLine();
+        }
+        #endregion
+
+        #region Set Comp Battleships
+        public static void SetShipComp(Stack<int> BattleShips, int[,] pos)
+        {
+            while (BattleShips.Count != 0)
+            {
+                int i = rand1.Next(0, 10);
+                int j = rand1.Next(0, 10);
+
+                int k = rand2.Next(0,5000);
+                string dir = "r";
+
+                if(k > 2500)
+                {
+                    dir = "d";
+                }
+
+                if (CanPlace(i, j, dir, pos, Battleships))
+                {
+                    if (dir == "d")
+                    {
+                        for (int x = 0; x < Battleships.Peek(); x++)
+                        {
+                            pos[i + x, j] = 1;
+                        }
+                    }
+                    else if (dir == "r")
+                    {
+                        for (int x = 0; x < Battleships.Peek(); x++)
+                        {
+                            pos[i, j + x] += 1;
+                        }
+                    }
+                    printArray(pos);
+                }
+            }
         }
         #endregion
     }
