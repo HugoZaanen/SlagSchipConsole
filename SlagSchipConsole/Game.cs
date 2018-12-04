@@ -218,9 +218,57 @@ namespace SlagSchipConsole
                     }
                 }
 
-                if(k < 0 && l > 8 )
+                if(k < 1 && l > 8 && d == "d")
                 {
+                    for (int i = 0; i < Battleships.Peek(); i++)
+                    {
+                        if (pos[k,l] == 1 ||
+                            pos[k + i, l - 1] == 1 ||
+                            pos[k+i,l] == 1 ||
+                            pos[k+i,l+i] == 1)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                 
+                if (k > 1 && l > 8 && d == "d")
+                {
+                    for (int i = 0; i < Battleships.Peek(); i++)
+                    {
+                        if (pos[k, l] == 1 ||
+                            pos[k + i, l - 1] == 1 ||
+                            pos[k + i, l] == 1 ||
+                            pos[k + i, l + i] == 1 ||
+                            pos[k - 1,l] == 1 ||
+                            pos[k - 1,l - 1] == 1 ||
+                            pos[k,l - 1] == 1)
+                        {
+                            return false;
+                        }
+                    }
+                }
 
+                if (k > 8 && l == 0 && d == "r")
+                {
+                    for (int i = 0; i < Battleships.Peek(); i++)
+                    {
+                        if(pos[k,l] == 1 ||
+                           pos[k - 1,l] == 1 ||
+                           pos[k - 1,l + 1 + i] == 1 ||
+                           pos[k,l + 1 + i] == 1)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                if(k > 8 && l > 0 && d == "r")
+                {
+                    for (int i = 0; i < Battleships.Peek(); i++)
+                    {
+
+                    }
                 }
             }
 
