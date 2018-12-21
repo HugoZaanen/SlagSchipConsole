@@ -52,44 +52,24 @@ namespace SlagSchipConsole
             #endregion C
 
             Console.WriteLine("welcome to Battleship");
-           
-            while (BattleshipsC.Count > 0)
-            {
-                x = rand1.Next(0, 9);
-                y = rand1.Next(0, 9);
+            MockData();
+            //printArray(posC);
 
-                string dir = "r";
+            //while (Battleships.Count > 0)
+            //{
+            //    Console.WriteLine("Choose x:");
+            //    int k = Int32.Parse(Console.ReadLine());
+            //    Console.WriteLine("Choose y: ");
+            //    int l = Int32.Parse(Console.ReadLine());
+            //    Console.WriteLine("Choose direction d : r");
+            //    string m = Console.ReadLine();
 
-                if (z == 0)
-                {
-                    dir = "r";
-                    z = 1;
-                }
-                else
-                {
-                    dir = "d";
-                    z = 0;
-                }
+            //    SetShip(k, l, m, posP, Battleships);
 
-                SetShip(x, y, dir, posC, BattleshipsC);              
-            }
+            //    printArray(posP);
+            //}
 
-            printArray(posC);
-
-            while (Battleships.Count > 0)
-            {
-                Console.WriteLine("Choose x:");
-                int k = Int32.Parse(Console.ReadLine());
-                Console.WriteLine("Choose y: ");
-                int l = Int32.Parse(Console.ReadLine());
-                Console.WriteLine("Choose direction d : r");
-                string m = Console.ReadLine();
-
-                SetShip(k, l, m, posP, Battleships);
-
-                printArray(posP);
-            }
-
+            PlayGame();
         }
 
         #region SetShip method
@@ -103,24 +83,27 @@ namespace SlagSchipConsole
         /// <param name="m"></param>
         public static void SetShip(int k, int l, string m, int[,] pos, Stack<int> Battleships)
         {
-            if (GameLogic.CheckShipPositions(pos, k, l, m, Battleships.Peek()))
+            if (Battleships.Count != 0)
             {
-                if (m == "d")
+                if (GameLogic.CheckShipPositions(pos, k, l, m, Battleships.Peek()))
                 {
-                    for (int i = 0; i < Battleships.Peek(); i++)
+                    if (m == "d")
                     {
-                        pos[k + i, l] = 1;
+                        for (int i = 0; i < Battleships.Peek(); i++)
+                        {
+                            pos[k + i, l] = 1;
+                        }
                     }
-                }
-                else if (m == "r")
-                {
-                    for (int i = 0; i < Battleships.Peek(); i++)
+                    else if (m == "r")
                     {
-                        pos[k, l + i] += 1;
+                        for (int i = 0; i < Battleships.Peek(); i++)
+                        {
+                            pos[k, l + i] += 1;
+                        }
                     }
-                }
 
-                Battleships.Pop();
+                    Battleships.Pop();
+                }
             }
         }
         #endregion
@@ -141,7 +124,6 @@ namespace SlagSchipConsole
         }
         #endregion
 
-
         #region Print array method  
         public static void printArray(int[,] arr)
         {
@@ -156,5 +138,125 @@ namespace SlagSchipConsole
             Console.WriteLine();
         }
         #endregion        
+
+        /// <summary>
+        /// Mock data for test array Computer player
+        /// </summary>
+        public static void MockData()
+        {
+            int k = 0;
+            int l = 1;
+            string m = "r";
+            SetShip(k, l, m, posC, BattleshipsC);//5
+
+            k = 3;
+            l = 4;
+            m = "d";
+            SetShip(k, l, m, posC, BattleshipsC);//4
+
+            k = 2;
+            l = 0;
+            m = "d";
+            SetShip(k, l, m, posC, BattleshipsC);//4
+
+            k = 0;
+            l = 7;
+            m = "r";
+            SetShip(k, l, m, posC, BattleshipsC);//3
+
+            k = 2;
+            l = 6;
+            m = "d";
+            SetShip(k, l, m, posC, BattleshipsC);//3
+
+            k = 5;
+            l = 8;
+            m = "d";
+            SetShip(k, l, m, posC, BattleshipsC);//3
+
+            k = 6;
+            l = 6;
+            m = "d";
+            SetShip(k, l, m, posC, BattleshipsC);//2
+
+            k = 7;
+            l = 1;
+            m = "d";
+            SetShip(k, l, m, posC, BattleshipsC);//2
+
+            k = 2;
+            l = 8;
+            m = "r";
+            SetShip(k, l, m, posC, BattleshipsC);//2
+
+            k = 9;
+            l = 8;
+            m = "r";
+            SetShip(k, l, m, posC, BattleshipsC);//2
+        }
+
+        public static void PlayGame()
+        {
+            bool game = true;
+
+            while(game)
+            {
+                Console.WriteLine("Pick x and y");
+                int x = Int32.Parse(Console.ReadLine());
+                int y = Int32.Parse(Console.ReadLine());
+
+                if(posC[x,y] == 1)
+                {
+                    Console.WriteLine("Hit!");
+                    posC[x, y]++;
+                    hitCountP++;
+                }
+                else
+                {
+                    Console.WriteLine("Miss!");
+                }
+
+                for(int i = 0;i < 10;i++)
+                {
+                    for(int j = 0; j < 10; j++)
+                    {
+                        if (posC[i,j] == 2)
+                        {
+                            Console.Write("2");
+                        }
+                        else
+                        {
+                            Console.Write("0");
+                        }
+                    }
+                    Console.WriteLine();
+                }
+
+                x = rand1.Next(0,9);
+                y = rand1.Next(0,9);
+
+                if(posP[x,y] == 1)
+                {
+                    Console.WriteLine("Computer has a hit!");
+                    posP[x, y]++;
+                    hitCountC++;
+                }
+                else
+                {
+                    Console.WriteLine("Computer misses");
+                }
+
+                if(hitCountP == 30)
+                {
+                    Console.WriteLine("Player Win!");
+                    game = false;
+                }
+                else if(hitCountC == 30)
+                {
+                    Console.WriteLine("Computer win!");
+                    game = false;
+                }
+            }
+        }
     }
 }
